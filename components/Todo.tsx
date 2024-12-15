@@ -2,6 +2,9 @@ import { revalidatePath } from 'next/cache';
 
 import { AuthGetCurrentUserServer, cookiesClient } from '@/utils/amplify-utils';
 import Logout from './Logout';
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
 
 async function Todo() {
   const user = await AuthGetCurrentUserServer();
@@ -21,8 +24,8 @@ async function Todo() {
       <h1>Hello, Amplify </h1>
       {user && <Logout />}
       <form action={addTodo}>
-        <input type="text" name="title" />
-        <button type="submit">Add Todo</button>
+        <Input type="text" name="title" />
+        <Button type="submit">Add Todo</Button>
       </form>
 
       <ul>
