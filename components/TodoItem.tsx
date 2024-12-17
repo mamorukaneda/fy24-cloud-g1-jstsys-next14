@@ -1,10 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox"
-import { Todo } from "@/types/types"
 import { Button } from "@/components/ui/button"
 import { Trash2 } from 'lucide-react'
+import type { Schema } from "../amplify/data/resource";
 
 interface TodoItemProps {
-  todo: Todo;
+  todo: Schema['Todo']['type'];
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
 }
@@ -14,7 +14,7 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
     <div className="flex items-center space-x-2">
       <Checkbox
         id={todo.id}
-        checked={todo.completed}
+        checked={todo.completed ?? false}
         onCheckedChange={() => onToggle(todo.id)}
       />
       <label

@@ -14,7 +14,7 @@ async function Todo() {
     'use server';
     const title = data.get('title') as string;
     await cookiesClient.models.Todo.create({
-      content: title,
+      text: title,
     });
     revalidatePath('/');
   }
@@ -29,7 +29,7 @@ async function Todo() {
       </form>
 
       <ul>
-        {todos && todos.map((todo) => <li key={todo.id}>{todo.content}</li>)}
+        {todos && todos.map((todo) => <li key={todo.id}>{todo.completed}</li>)}
       </ul>
     </>
   );
