@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { TodoItem } from "./TodoItem"
+import { type todoType } from "../types/types"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -9,10 +10,10 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
-type todoType = Schema['Todo']['type'];
+//type todoType = Schema['Todo']['type'];
 
 export function TodoList() {
-  const [todos, setTodos] = useState<Schema['Todo']['type'][]>([]);
+  const [todos, setTodos] = useState<todoType[]>([]);
   const [newTodo, setNewTodo] = useState("")
 
   useEffect(() => {
@@ -32,7 +33,11 @@ export function TodoList() {
   };
 
   const updateTodo = async (todo: todoType) => {
-    await client.models.Todo.update({id: todo.id, text: todo.text, completed: todo.completed});
+    await client.models.Todo.update({
+      id: todo.id, 
+      text: todo.text, 
+      completed: todo.completed
+    });
   }
 
   const toggleTodo = (id: string) => {

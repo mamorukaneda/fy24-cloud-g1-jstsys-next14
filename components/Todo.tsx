@@ -15,6 +15,7 @@ async function Todo() {
     const title = data.get('title') as string;
     await cookiesClient.models.Todo.create({
       text: title,
+      completed: false,
     });
     revalidatePath('/');
   }
