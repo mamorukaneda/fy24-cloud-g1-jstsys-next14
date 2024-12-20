@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "ＮＴＴデータ北陸：クラウド部",
 };
 
-export default function RootLayout({
+export default function rootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ConfigureAmplifyClientSide />
-        {children}
+          {children}
       </body>
     </html>
   );
