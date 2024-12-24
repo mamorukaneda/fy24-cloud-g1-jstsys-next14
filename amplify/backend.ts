@@ -4,7 +4,6 @@ import { data } from './data/resource';
 import { helloWorld  } from './functions/hello-world/resource';
 import { insertTodo  } from './functions/insertTodo/resource';
 import { Effect, Policy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { StartingPosition, EventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import { Stack } from "aws-cdk-lib";
 
 
