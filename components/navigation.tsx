@@ -9,6 +9,7 @@ const navItems = [
   { name: 'Introduction', href: '/' },
   { name: 'Todo', href: '/todo2' },
   { name: 'map', href: '/map' },
+  { name: 'vehcleManagemet', href: '/vehcleManagemet' },
   { name: 'logout', href: '/logout' },
 ]
 

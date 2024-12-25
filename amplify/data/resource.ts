@@ -1,6 +1,7 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { sayHello } from '../functions/say-hello/resouce'
 import { insertTodo } from '../functions/insertTodo/resource';
+import { AllowListReceiptFilter } from 'aws-cdk-lib/aws-ses';
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -15,23 +16,30 @@ const schema = a.schema({
       completed: a.boolean().required(),
     })
     .authorization((allow) => [allow.owner()]),
-    sayHello: a
-      .query()
-      .arguments({
-        name : a.string(),
-      })
-      .returns(a.string())
-      .handler(a.handler.function(sayHello))
-      .authorization((allow) => [allow.authenticated()]),
-    insertTodo: a
-      .query()
-      .arguments({
-        msg : a.string(),
-      })
-      .returns(a.json())
-      .handler(a.handler.function(insertTodo))
-      .authorization((allow) => [allow.authenticated()]),
-    });
+  Vehicle: a
+    .model({
+      name: a.string().required(),
+      type: a.string().required(),
+      imei: a.string().required(),
+    })
+    .authorization((allow) => [allow.authenticated()]),
+  sayHello: a
+    .query()
+    .arguments({
+      name : a.string(),
+    })
+    .returns(a.string())
+    .handler(a.handler.function(sayHello))
+    .authorization((allow) => [allow.authenticated()]),
+  insertTodo: a
+    .query()
+    .arguments({
+      msg : a.string(),
+    })
+    .returns(a.json())
+    .handler(a.handler.function(insertTodo))
+    .authorization((allow) => [allow.authenticated()]),
+  });
 
 export type Schema = ClientSchema<typeof schema>;
 
