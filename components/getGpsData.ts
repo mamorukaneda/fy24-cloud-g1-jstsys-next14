@@ -3,6 +3,9 @@
 export async function getGpsData(date: Date, timeRange: number, vehicles: string[]) {
   // この関数は実際のアプリケーションでは、データベースやAPIからGPSデータを取得します
   // ここではダミーデータを返します
+  // const res = await fetch(
+  //   `https://qnhgfj7e92.execute-api.ap-northeast-1.amazonaws.com/dev/GetFromDynamoDB?start_time=${formattedStart}&end_time=${formattedEnd}`
+  // );
   return vehicles.map(vehicle => ({
     vehicle,
     color: `#${Math.floor(Math.random()*16777215).toString(16)}`,

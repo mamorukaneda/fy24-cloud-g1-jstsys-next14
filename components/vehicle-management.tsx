@@ -14,6 +14,8 @@ import { toast } from "@/hooks/use-toast"
 import { type vehicleType } from "../types/types"
 import { generateClient } from 'aws-amplify/api'
 import type { Schema } from "../amplify/data/resource"
+import { traders } from './traders'
+import { Value } from '@radix-ui/react-select'
 
 const client = generateClient<Schema>();
 
@@ -23,7 +25,7 @@ export default function VehicleManagement() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [currentVehicle, setCurrentVehicle] = useState<vehicleType | null>(null)
-  const [newVehicle, setNewVehicle] = useState<Omit<vehicleType, 'id' | 'createdAt' | 'updatedAt'>>({ name: '', type: '', imei: '' })
+  const [newVehicle, setNewVehicle] = useState<Omit<vehicleType, 'id' | 'createdAt' | 'updatedAt'>>({ name: '', trader: '', imei: '' })
   // const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function VehicleManagement() {
   const addVehicle = async () => {
     await client.models.Vehicle.create({
       name: newVehicle.name,
-      type: newVehicle.type,
+      trader: newVehicle.trader,
       imei: newVehicle.imei,
     });
   };
@@ -47,7 +49,7 @@ export default function VehicleManagement() {
     await client.models.Vehicle.update({
       id: vehicle.id,
       name: vehicle.name, 
-      type: vehicle.type, 
+      trader: vehicle.trader, 
       imei: vehicle.imei,
     });
   }
@@ -59,7 +61,7 @@ export default function VehicleManagement() {
   const handleAddVehicle = () => {
     addVehicle()
     setIsAddDialogOpen(false)
-    setNewVehicle({ name: '', type: '', imei: '' })
+    setNewVehicle({ name: '', trader: '', imei: '' })
     toast({
       title: "車両追加",
       description: "新しい車両が正常に追加されました。",
@@ -147,7 +149,7 @@ export default function VehicleManagement() {
         <TableHeader>
           <TableRow>
             <TableHead>車両名</TableHead>
-            <TableHead>車両種別</TableHead>
+            <TableHead>会社名</TableHead>
             <TableHead>IMEIコード</TableHead>
             <TableHead>操作</TableHead>
           </TableRow>
@@ -156,7 +158,7 @@ export default function VehicleManagement() {
           {vehicles.map((vehicle) => (
             <TableRow key={vehicle.id}>
               <TableCell>{vehicle.name}</TableCell>
-              <TableCell>{vehicle.type}</TableCell>
+              <TableCell>{vehicle.trader}</TableCell>
               <TableCell>{vehicle.imei}</TableCell>
               <TableCell>
                 <Button variant="outline" size="sm" className="mr-2" onClick={() => {
@@ -197,18 +199,18 @@ export default function VehicleManagement() {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="type" className="text-right">
-                車両種別
+                会社名
               </Label>
               <Select
-                onValueChange={(value) => setNewVehicle({ ...newVehicle, type: value })}
+                onValueChange={(value) => setNewVehicle({ ...newVehicle, trader: value })}
               >
                 <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="車両種別を選択" />
+                  <SelectValue placeholder="会社名を選択" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="トラック">トラック</SelectItem>
-                  <SelectItem value="乗用車">乗用車</SelectItem>
-                  <SelectItem value="バス">バス</SelectItem>
+                  {traders.map((value) => {
+                      return <SelectItem key={value.id} value={value.name}>{value.name}</SelectItem>
+                  })}
                 </SelectContent>
               </Select>
             </div>
@@ -250,19 +252,19 @@ export default function VehicleManagement() {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="edit-type" className="text-right">
-                車両種別
+                会社名
               </Label>
               <Select
-                onValueChange={(value) => setCurrentVehicle(currentVehicle ? { ...currentVehicle, type: value } : null)}
-                value={currentVehicle?.type}
+                onValueChange={(value) => setCurrentVehicle(currentVehicle ? { ...currentVehicle, trader: value } : null)}
+                value={currentVehicle?.trader}
               >
                 <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="車両種別を選択" />
+                  <SelectValue placeholder="会社名を選択" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="トラック">トラック</SelectItem>
-                  <SelectItem value="乗用車">乗用車</SelectItem>
-                  <SelectItem value="バス">バス</SelectItem>
+                  {traders.map((value) => {
+                    return <SelectItem key={value.id} value={value.name}>{value.name}</SelectItem>
+                  })}
                 </SelectContent>
               </Select>
             </div>

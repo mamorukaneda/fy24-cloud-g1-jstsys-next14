@@ -1,7 +1,7 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { sayHello } from '../functions/say-hello/resouce'
 import { insertTodo } from '../functions/insertTodo/resource';
-import { AllowListReceiptFilter } from 'aws-cdk-lib/aws-ses';
+import { getGpsData } from '../functions/getGpsData/resource';
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -19,7 +19,7 @@ const schema = a.schema({
   Vehicle: a
     .model({
       name: a.string().required(),
-      type: a.string().required(),
+      trader: a.string().required(),
       imei: a.string().required(),
     })
     .authorization((allow) => [allow.authenticated()]),
@@ -38,6 +38,16 @@ const schema = a.schema({
     })
     .returns(a.json())
     .handler(a.handler.function(insertTodo))
+    .authorization((allow) => [allow.authenticated()]),
+  getGpsData: a
+    .query()
+    .arguments({
+      baseDateTime : a.datetime().required(),
+      timeRange : a.integer().required(),
+      vehicleImeis : a.string().array(),
+    })
+    .returns(a.json())
+    .handler(a.handler.function(getGpsData))
     .authorization((allow) => [allow.authenticated()]),
   });
 
