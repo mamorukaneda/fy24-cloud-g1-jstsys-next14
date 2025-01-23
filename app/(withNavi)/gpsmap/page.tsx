@@ -3,8 +3,11 @@
 import { useState, useEffect } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import VehicleSelect from '@/components/VehicleSelect'
-import Map from '@/components/GpsMap'
+import dynamic from "next/dynamic";
+//import Map from '@/components/GpsMap'
 import { getGpsData } from '@/components/getGpsData'
+
+const Map = dynamic(() => import("@/components/GpsMap"), { ssr:false });
 
 interface gpsData {
   vehicle: string,
