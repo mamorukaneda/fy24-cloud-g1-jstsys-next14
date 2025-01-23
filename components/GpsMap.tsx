@@ -6,9 +6,14 @@ import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'
 import { LatLngTuple } from 'leaflet';
 
+interface i_gpsData {
+  vehicle: string,
+  color: string,
+  positions: number[][],
+}
 
 interface MapProps {
-  gpsData: any[]
+  gpsData: i_gpsData[]
 }
 
 export default function Map({ gpsData }: MapProps) {

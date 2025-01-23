@@ -5,14 +5,23 @@
 import { useState, useEffect } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import VehicleSelect from '@/components/VehicleSelect'
-import Map from '@/components/Map'
+import dynamic from "next/dynamic";
+//import Map from '@/components/GpsMap'
 import { getGpsData } from '@/components/getGpsData'
+
+const Map = dynamic(() => import("@/components/GpsMap"), { ssr:false });
+
+interface gpsData {
+  vehicle: string,
+  color: string,
+  positions: number[][],
+}
 
 export default function GpsTrackingMap() {
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
   const [timeRange, setTimeRange] = useState<string>("3")
   const [selectedVehicles, setSelectedVehicles] = useState<string[]>([])
-  const [gpsData, setGpsData] = useState<any[]>([])
+  const [gpsData, setGpsData] = useState<gpsData[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
