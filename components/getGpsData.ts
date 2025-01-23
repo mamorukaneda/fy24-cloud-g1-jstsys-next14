@@ -1,4 +1,4 @@
-'use client'
+'use server'
 
 export async function getGpsData(date: Date, timeRange: number, vehicles: string[]) {
   // この関数は実際のアプリケーションでは、データベースやAPIからGPSデータを取得します

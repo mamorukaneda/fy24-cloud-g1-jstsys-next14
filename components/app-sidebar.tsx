@@ -22,7 +22,7 @@ import {
 const navItems = [
   { title: 'Introduction', url: '/' },
   { title: 'Todo', url: '/todo2' },
-  { title: '地図', url: '/map' },
+  { title: '地図', url: '/gpsmap' },
   { title: '車両管理', url: '/vehicleManagement' },
   { title: 'logout', url: '/logout' },
 ]

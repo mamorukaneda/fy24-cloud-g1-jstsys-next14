@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import VehicleSelect from '@/components/VehicleSelect'
-import Map from '@/components/Map'
+import Map from '@/components/GpsMap'
 import { getGpsData } from '@/components/getGpsData'
 
 interface gpsData {
