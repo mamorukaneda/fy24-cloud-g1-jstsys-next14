@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { PlusCircle, Pencil, Trash2, Upload } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { PlusCircle, Pencil, Trash2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -13,7 +13,6 @@ import { type vehicleType } from "../types/types"
 import { generateClient } from 'aws-amplify/api'
 import type { Schema } from "../amplify/data/resource"
 import { traders } from './traders'
-import { Value } from '@radix-ui/react-select'
 
 const client = generateClient<Schema>();
 

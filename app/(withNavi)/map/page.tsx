@@ -6,11 +6,17 @@ import VehicleSelect from '@/components/VehicleSelect'
 import Map from '@/components/Map'
 import { getGpsData } from '@/components/getGpsData'
 
+interface gpsData {
+  vehicle: string,
+  color: string,
+  positions: number[][],
+}
+
 export default function GpsTrackingMap() {
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
   const [timeRange, setTimeRange] = useState<string>("3")
   const [selectedVehicles, setSelectedVehicles] = useState<string[]>([])
-  const [gpsData, setGpsData] = useState<any[]>([])
+  const [gpsData, setGpsData] = useState<gpsData[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
