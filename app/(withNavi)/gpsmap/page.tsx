@@ -9,6 +9,9 @@ import dynamic from "next/dynamic";
 //import Map from '@/components/GpsMap'
 import { getGpsData } from '@/components/getGpsData'
 
+import type { Schema } from "@/amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
+
 const Map = dynamic(() => import("@/components/GpsMap"), { ssr:false });
 
 interface gpsData {
@@ -16,6 +19,8 @@ interface gpsData {
   color: string,
   positions: number[][],
 }
+
+const client = generateClient<Schema>();
 
 export default function GpsTrackingMap() {
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
@@ -31,8 +36,34 @@ export default function GpsTrackingMap() {
     fetchData()
   }, [date, timeRange, selectedVehicles])
 
+  // const startTime = '2024-12-02T00:00:00'
+  // const formattedStart = startTime.replace('T', '').replace(/-/g, '').replace(/:/g, '')
+
+  // // const getData = async () => {
+  // //   try {
+  // //     const formattedEnd = "20241202235959";
+  // //     const response = await client.queries.getGpsData({
+  // //       baseDateTime: new Date(startTime).toISOString(),
+  // //       timeRange: parseInt("24"),
+  // //     });
+  // //     if (response.data) {
+  // //       const parsedData = JSON.parse(response.data.body);
+  // //       console.log(parsedData);
+  // //     } else {
+  // //       console.error("No data received");
+  // //     }
+  // //   } catch (error) {
+  // //     console.error("Error fetching GPS data:", error);
+  // //   }
+  // // };
+
+  // // getData();
+  
   return (
     <div className="p-4 space-y-4">
+      <div className="p-4 space-y-4">
+        <h1 className="text-2xl font-bold">GPS  Map</h1>
+      </div>
       <h1 className="text-2xl font-bold">GPS Tracking Map</h1>
       <div className="flex space-x-4">
         <input
@@ -58,7 +89,21 @@ export default function GpsTrackingMap() {
           setSelectedVehicles={setSelectedVehicles}
         />
       </div>
-      <Map gpsData={gpsData} />
+      <div>
+        <div>
+          <h2 className="text-xl font-semibold">Selected Parameters</h2>
+          <p>Date: {date}</p>
+          <p>Time Range: {timeRange} hours</p>
+          <p>Selected Vehicles: {selectedVehicles.join(', ')}</p>
+        </div>
+      </div>
+      <div>
+        <Map gpsData={gpsData} />
+      </div>
+      <div>
+        <pre>{JSON.stringify(gpsData, null, 2)}</pre>
+      </div>
+
     </div>
   )
 }

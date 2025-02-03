@@ -14,7 +14,7 @@ export default function VehicleSelect({ selectedVehicles, setSelectedVehicles }:
 
   useEffect(() => {
     // 実際のアプリケーションでは、ここで車両リストを取得するAPIを呼び出します
-    setVehicles(['Vehicle 1', 'Vehicle 2', 'Vehicle 3', 'Vehicle 4', 'Vehicle 5'])
+    setVehicles(['001000000000009', '002000000000004', '001000000000021', '001000000000010', '001000000000006'])
   }, [])
 
   useEffect(() => {

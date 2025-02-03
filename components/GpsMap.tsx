@@ -30,6 +30,7 @@ export default function Map({ gpsData }: MapProps) {
           key={index}
           positions={vehicleData.positions}
           color={vehicleData.color}
+          weight={5} // 線の太さを指定
         />
       ))}
     </MapContainer>

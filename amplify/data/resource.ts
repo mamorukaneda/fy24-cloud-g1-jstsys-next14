@@ -48,7 +48,7 @@ const schema = a.schema({
     })
     .returns(a.json())
     .handler(a.handler.function(getGpsData))
-    .authorization((allow) => [allow.authenticated()]),
+    .authorization((allow) => [allow.owner()]),
   });
 
 export type Schema = ClientSchema<typeof schema>;
