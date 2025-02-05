@@ -20,12 +20,18 @@ interface gpsData {
   positions: number[][],
 }
 
+interface Vehicle {
+  imei: string;
+  name: string;
+  trader: string;
+}
+
 const client = generateClient<Schema>();
 
 export default function GpsTrackingMap() {
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
   const [timeRange, setTimeRange] = useState<string>("3")
-  const [selectedVehicles, setSelectedVehicles] = useState<string[]>([])
+  const [selectedVehicles, setSelectedVehicles] = useState<Vehicle[]>([])
   const [gpsData, setGpsData] = useState<gpsData[]>([])
 
   useEffect(() => {
@@ -36,28 +42,6 @@ export default function GpsTrackingMap() {
     fetchData()
   }, [date, timeRange, selectedVehicles])
 
-  // const startTime = '2024-12-02T00:00:00'
-  // const formattedStart = startTime.replace('T', '').replace(/-/g, '').replace(/:/g, '')
-
-  // // const getData = async () => {
-  // //   try {
-  // //     const formattedEnd = "20241202235959";
-  // //     const response = await client.queries.getGpsData({
-  // //       baseDateTime: new Date(startTime).toISOString(),
-  // //       timeRange: parseInt("24"),
-  // //     });
-  // //     if (response.data) {
-  // //       const parsedData = JSON.parse(response.data.body);
-  // //       console.log(parsedData);
-  // //     } else {
-  // //       console.error("No data received");
-  // //     }
-  // //   } catch (error) {
-  // //     console.error("Error fetching GPS data:", error);
-  // //   }
-  // // };
-
-  // // getData();
   
   return (
     <div className="p-4 space-y-4">
@@ -94,7 +78,7 @@ export default function GpsTrackingMap() {
           <h2 className="text-xl font-semibold">Selected Parameters</h2>
           <p>Date: {date}</p>
           <p>Time Range: {timeRange} hours</p>
-          <p>Selected Vehicles: {selectedVehicles.join(', ')}</p>
+          <p>Selected Vehicles: {selectedVehicles.map(vehicle => vehicle.name).join(', ')}</p>
         </div>
       </div>
       <div>

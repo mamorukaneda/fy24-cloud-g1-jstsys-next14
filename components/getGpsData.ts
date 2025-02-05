@@ -10,16 +10,17 @@ Amplify.configure(config);
 
 const client = generateClient<Schema>();
 
-interface ParsedData {
-  statusCode: number;
-  body: string;
-}
-
 interface GpsItem {
   imei: string;
   latitude: number;
   longitude: number;
   datetime: string;
+  name: string;
+  trader: string;
+}
+
+interface Vehicle {
+  imei: string;
   name: string;
   trader: string;
 }
@@ -34,7 +35,7 @@ interface GpsItem {
     return color;
 }
 
-export async function getGpsData(date: Date, timeRange: number, vehicles: string[]) {
+export async function getGpsData(date: Date, timeRange: number, vehicles: Vehicle[]) {
   // この関数は実際のアプリケーションでは、データベースやAPIからGPSデータを取得します
   // ここではダミーデータを返します
   // const res = await fetch(
@@ -44,6 +45,7 @@ export async function getGpsData(date: Date, timeRange: number, vehicles: string
   const response = await client.queries.getGpsData({
     baseDateTime: date.toISOString(),
     timeRange: parseInt(timeRange.toString()),
+    vehicleImeis: vehicles.map(vehicle => vehicle.imei),
   });
   let gpsData
   if (response.data) {
@@ -65,11 +67,9 @@ export async function getGpsData(date: Date, timeRange: number, vehicles: string
   });
 
   return vehicles.map(vehicle => {
-    const vehicleData = imeiGroups[vehicle] || [];
-    console.log(vehicle);
-    console.log(vehicleData);
+    const vehicleData = imeiGroups[vehicle.imei] || [];
     return {
-      vehicle,
+      vehicle: vehicle.imei,
       color: getRandomColor(),
       positions: vehicleData.map(item => [item.latitude, item.longitude])
     };
