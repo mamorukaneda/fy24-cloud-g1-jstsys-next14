@@ -5,34 +5,20 @@ import { generateClient } from "aws-amplify/data";
 // layout.tsxでconfigure済みのはずだが...
 import { Amplify } from 'aws-amplify';
 import config from "@/amplify_outputs.json";
-
+import { Vehicle } from "@/types/types";
+import { GpsItem } from "@/types/types";
 Amplify.configure(config);
 
 const client = generateClient<Schema>();
 
-interface GpsItem {
-  imei: string;
-  latitude: number;
-  longitude: number;
-  datetime: string;
-  name: string;
-  trader: string;
-}
-
-interface Vehicle {
-  imei: string;
-  name: string;
-  trader: string;
-}
-
-  // ランダムな色を生成する関数
-  function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+// ランダムな色を生成する関数
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 
 export async function getGpsData(date: Date, timeRange: number, vehicles: Vehicle[]) {
@@ -56,7 +42,6 @@ export async function getGpsData(date: Date, timeRange: number, vehicles: Vehicl
     gpsData = [];
   }
 
-  console.log(gpsData);
   // データをIMEIごとにグループ化
   const imeiGroups: { [key: string]: GpsItem[] } = {};
   gpsData.forEach((item: GpsItem) => {
@@ -69,7 +54,7 @@ export async function getGpsData(date: Date, timeRange: number, vehicles: Vehicl
   return vehicles.map(vehicle => {
     const vehicleData = imeiGroups[vehicle.imei] || [];
     return {
-      vehicle: vehicle.imei,
+      vehicle: vehicle,
       color: getRandomColor(),
       positions: vehicleData.map(item => [item.latitude, item.longitude])
     };

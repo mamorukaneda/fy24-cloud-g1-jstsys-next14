@@ -7,10 +7,10 @@ export const handler: Schema["getGpsData"]["functionHandler"] = async (event) =>
     const timeRange = event.arguments.timeRange;
     const vehicles = event.arguments.vehicleImeis;
 
-    // const formattedStart = baseDateTime.subtract(timeRange, 'hour').format('YYYYMMDDHHmmss');
-    // const formattedEnd = baseDateTime.format('YYYYMMDDHHmmss')
-    const formattedStart = "20241201000000";
-    const formattedEnd = "20241202235959";
+    const formattedStart = baseDateTime.subtract(timeRange, 'hour').format('YYYYMMDDHHmmss');
+    const formattedEnd = baseDateTime.format('YYYYMMDDHHmmss')
+    // const formattedStart = "20241201000000";
+    // const formattedEnd = "20241202235959";
     try {
 
         const response = await fetch(

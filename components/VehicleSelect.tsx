@@ -5,16 +5,11 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { generateClient } from "aws-amplify/data"
 import type { Schema } from "@/amplify/data/resource"
+import { Vehicle } from "@/types/types";
 
 interface VehicleSelectProps {
   selectedVehicles: Vehicle[]
   setSelectedVehicles: (vehicles: Vehicle[]) => void
-}
-
-interface Vehicle {
-  imei: string;
-  name: string;
-  trader: string;
 }
 
 export default function VehicleSelect({ selectedVehicles, setSelectedVehicles }: VehicleSelectProps) {
@@ -33,7 +28,7 @@ export default function VehicleSelect({ selectedVehicles, setSelectedVehicles }:
       }
     }
     fetchVehicles()
-  }, []) 
+  }, [client.models.Vehicle.list]) 
 
   useEffect(() => {
     // 初期状態ですべての車両を選択

@@ -8,46 +8,47 @@ import VehicleSelect from '@/components/VehicleSelect'
 import dynamic from "next/dynamic";
 //import Map from '@/components/GpsMap'
 import { getGpsData } from '@/components/getGpsData'
+import dayjs from 'dayjs';
 
 import type { Schema } from "@/amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { Vehicle } from "@/types/types";
 
 const Map = dynamic(() => import("@/components/GpsMap"), { ssr:false });
 
 interface gpsData {
-  vehicle: string,
+  vehicle: Vehicle,
   color: string,
   positions: number[][],
-}
-
-interface Vehicle {
-  imei: string;
-  name: string;
-  trader: string;
 }
 
 const client = generateClient<Schema>();
 
 export default function GpsTrackingMap() {
-  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
+  const [date, setDate] = useState<string>(new Date("2024-12-02T00:00").toISOString().split('T')[0])
   const [timeRange, setTimeRange] = useState<string>("3")
   const [selectedVehicles, setSelectedVehicles] = useState<Vehicle[]>([])
   const [gpsData, setGpsData] = useState<gpsData[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getGpsData(new Date(date), parseInt(timeRange), selectedVehicles)
+      //日本時間に合わせる。
+      const dateJST = new Date(date).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+      const data = await getGpsData(new Date(dateJST), parseInt(timeRange), selectedVehicles);
       setGpsData(data)
     }
     fetchData()
   }, [date, timeRange, selectedVehicles])
 
+  //確認用
+  const dateJST = new Date(date).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+  const baseDateTime = dayjs(dateJST);
+  const formattedStart = baseDateTime.subtract(Number(timeRange), 'hour').format('YYYYMMDDHHmmss');
+  const formattedEnd = baseDateTime.format('YYYYMMDDHHmmss')
+
   
   return (
     <div className="p-4 space-y-4">
-      <div className="p-4 space-y-4">
-        <h1 className="text-2xl font-bold">GPS  Map</h1>
-      </div>
       <h1 className="text-2xl font-bold">GPS Tracking Map</h1>
       <div className="flex space-x-4">
         <input
@@ -76,7 +77,7 @@ export default function GpsTrackingMap() {
       <div>
         <div>
           <h2 className="text-xl font-semibold">Selected Parameters</h2>
-          <p>Date: {date}</p>
+          <p>Date: {date}, Start:{formattedStart}, End:{formattedEnd}</p>
           <p>Time Range: {timeRange} hours</p>
           <p>Selected Vehicles: {selectedVehicles.map(vehicle => vehicle.name).join(', ')}</p>
         </div>
