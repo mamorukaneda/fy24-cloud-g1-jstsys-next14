@@ -18,7 +18,7 @@ interface MapProps {
   gpsData: i_gpsData[]
 }
 export default function Map({ gpsData }: MapProps) {
-  const center: [number, number] = [35.6895, 139.6917] // Tokyo coordinates
+  const center: [number, number] = [36.783761, 136.723564] 
 
   // カスタムアイコンの作成
   const createCustomIcon = (color: string) => {
