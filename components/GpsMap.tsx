@@ -18,8 +18,8 @@ interface MapProps {
   gpsData: i_gpsData[]
 }
 export default function Map({ gpsData }: MapProps) {
-  const center: [number, number] = [36.204086,136.628379]
-  
+  const center: [number, number] = [36.2040,136.6283]
+
   // カスタムアイコンの作成
   const createCustomIcon = (color: string) => {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${color}" stroke="black" stroke-width="2">
