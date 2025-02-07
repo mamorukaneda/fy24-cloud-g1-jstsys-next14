@@ -25,7 +25,7 @@ interface gpsData {
 const client = generateClient<Schema>();
 
 export default function GpsTrackingMap() {
-  const [date, setDate] = useState<string>(new Date("2024-12-02T00:00").toISOString().split('T')[0])
+  const [date, setDate] = useState<string>(new Date("2024-12-03T00:00").toISOString().split('T')[0])
   const [timeRange, setTimeRange] = useState<string>("3")
   const [selectedVehicles, setSelectedVehicles] = useState<Vehicle[]>([])
   const [gpsData, setGpsData] = useState<gpsData[]>([])

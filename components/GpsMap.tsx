@@ -18,8 +18,8 @@ interface MapProps {
   gpsData: i_gpsData[]
 }
 export default function Map({ gpsData }: MapProps) {
-  const center: [number, number] = [36.783761, 136.723564] 
-
+  const center: [number, number] = [36.204086,136.628379]
+  
   // カスタムアイコンの作成
   const createCustomIcon = (color: string) => {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${color}" stroke="black" stroke-width="2">
@@ -36,7 +36,7 @@ export default function Map({ gpsData }: MapProps) {
   };
 
   return (
-    <MapContainer center={center} zoom={13} style={{ height: '600px', width: '100%' }}>
+    <MapContainer center={center} zoom={15} style={{ height: '600px', width: '100%' }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
