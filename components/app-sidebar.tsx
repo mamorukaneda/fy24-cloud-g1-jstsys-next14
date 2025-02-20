@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { GalleryVerticalEnd, Search } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
@@ -18,17 +18,27 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar'
+import { signOut } from 'aws-amplify/auth'
 
 const navItems = [
   { title: 'Introduction', url: '/' },
   { title: 'Todo', url: '/todo2' },
   { title: '地図', url: '/gpsmap' },
   { title: '車両管理', url: '/vehicleManagement' },
-  { title: 'logout', url: '/logout' },
+  { title: 'logout', url: '#' },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const router = useRouter();
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push("/login");
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  }  
 
   return (
     <Sidebar>
@@ -72,7 +82,7 @@ export function AppSidebar() {
               {navItems.map(item => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url}>{item.title}</Link>
+                  {item.title != 'logout' ? <Link href={item.url}>{item.title}</Link> : <Link href='#' onClick={handleLogout}>{item.title}</Link>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

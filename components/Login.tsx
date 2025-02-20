@@ -8,7 +8,7 @@ import { useEffect } from "react";
 function Login({ user }: { user?: AuthUser }) {
   useEffect(() => {
     if (user) {
-      redirect("/todo2");
+      redirect("/gpsmap");
     }
   }, [user]);
   return null;
