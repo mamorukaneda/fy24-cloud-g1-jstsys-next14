@@ -2,6 +2,7 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { sayHello } from '../functions/say-hello/resouce'
 import { insertTodo } from '../functions/insertTodo/resource';
 import { getGpsData } from '../functions/getGpsData/resource';
+import { getGpsDataWithTime } from '../functions/getGpsDataWithTime/resource';
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -48,6 +49,16 @@ const schema = a.schema({
     })
     .returns(a.json())
     .handler(a.handler.function(getGpsData))
+    .authorization((allow) => [allow.authenticated()]),
+  getGpsDataWithTime: a
+    .query()
+    .arguments({
+      startTime : a.string().required(),
+      endTime : a.string().required(),
+      vehicleImeis : a.string().array(),
+    })
+    .returns(a.json())
+    .handler(a.handler.function(getGpsDataWithTime))
     .authorization((allow) => [allow.authenticated()]),
   });
 

@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { useState, useEffect } from 'react'
-import { PlusCircle, Pencil, Trash2 } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { PlusCircle, Pencil, Trash2, Upload } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -25,7 +25,7 @@ export default function VehicleManagement() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [currentVehicle, setCurrentVehicle] = useState<vehicleType | null>(null)
   const [newVehicle, setNewVehicle] = useState<Omit<vehicleType, 'id' | 'createdAt' | 'updatedAt'>>({ name: '', trader: '', imei: '' })
-  // const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const sub = client.models.Vehicle.observeQuery().subscribe({
@@ -92,36 +92,36 @@ export default function VehicleManagement() {
     }
   }
 
-  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0]
-  //   if (file) {
-  //     const reader = new FileReader()
-  //     reader.onload = (e) => {
-  //       const content = e.target?.result as string
-  //       const lines = content.split('\n')
-  //       const newVehicles: Vehicle[] = []
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const content = e.target?.result as string
+        const lines = content.split('\n')
+        const newVehicles: Vehicle[] = []
         
-  //       for (let i = 1; i < lines.length; i++) {  // Skip header row
-  //         const [name, type, imei] = lines[i].split(',')
-  //         if (name && type && imei) {
-  //           newVehicles.push({
-  //             id: Date.now() + i,  // Unique ID
-  //             name: name.trim(),
-  //             type: type.trim(),
-  //             imei: imei.trim()
-  //           })
-  //         }
-  //       }
+        for (let i = 1; i < lines.length; i++) {  // Skip header row
+          const [name, type, imei] = lines[i].split(',')
+          if (name && type && imei) {
+            newVehicles.push({
+              id: Date.now() + i,  // Unique ID
+              name: name.trim(),
+              type: type.trim(),
+              imei: imei.trim()
+            })
+          }
+        }
 
-  //       setVehicles([...vehicles, ...newVehicles])
-  //       toast({
-  //         title: "CSVアップロード",
-  //         description: `${newVehicles.length}台の車両が正常にインポートされました。`,
-  //       })
-  //     }
-  //     reader.readAsText(file)
-  //   }
-  // }
+        setVehicles([...vehicles, ...newVehicles])
+        toast({
+          title: "CSVアップロード",
+          description: `${newVehicles.length}台の車両が正常にインポートされました。`,
+        })
+      }
+      reader.readAsText(file)
+    }
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -130,7 +130,7 @@ export default function VehicleManagement() {
         <Button onClick={() => setIsAddDialogOpen(true)}>
           <PlusCircle className="mr-2 h-4 w-4" /> 新規車両追加
         </Button>
-        {/* <div>
+        {<div>
           <input
             type="file"
             accept=".csv"
@@ -142,7 +142,7 @@ export default function VehicleManagement() {
           <Button onClick={() => fileInputRef.current?.click()}>
             <Upload className="mr-2 h-4 w-4" /> CSVアップロード
           </Button>
-        </div> */}
+        </div>}
       </div>
       <Table>
         <TableHeader>

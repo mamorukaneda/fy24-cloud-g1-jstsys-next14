@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css'
 import LatLngTuple from 'leaflet';
 import { Vehicle } from "@/types/types";
 
+
 interface i_gpsData {
   vehicle: Vehicle,
   color: string,
@@ -20,23 +21,29 @@ interface MapProps {
 export default function Map({ gpsData }: MapProps) {
   const center: [number, number] = [36.2040,136.6283]
 
-  // カスタムアイコンの作成
-  const createCustomIcon = (color: string) => {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${color}" stroke="black" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/>
-    </svg>`;
+  // // カスタムアイコンの作成
+  // const createCustomIcon = (color: string) => {
+  //   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${color}" stroke="black" stroke-width="2">
+  //       <circle cx="12" cy="12" r="10"/>
+  //   </svg>`;
   
-    const encodedSvg = encodeURIComponent(svg);
+  //   const encodedSvg = encodeURIComponent(svg);
   
-    return new LatLngTuple.Icon({
-      iconUrl: `data:image/svg+xml;utf8,${encodedSvg}`,
-      iconSize: [20, 20],
-      iconAnchor: [15, 15],
-    });
-  };
+  //   return new LatLngTuple.Icon({
+  //     // iconUrl: `data:image/svg+xml;utf8,${encodedSvg}`,
+  //     iconUrl: `/snowplow.png`,
+  //     iconSize: [20, 20],
+  //     iconAnchor: [15, 15],
+  //   });
+  // };
+  const snowplowIcon = new Icon({
+    iconUrl: '/images/snowplow.png', // 画像のパスを修正
+    iconSize: [20, 20],
+    iconAnchor: [15, 15],
+  });
 
   return (
-    <MapContainer center={center} zoom={15} style={{ height: '600px', width: '100%' }}>
+    <MapContainer center={center} zoom={12} style={{ height: '600px', width: '100%' }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -53,7 +60,8 @@ export default function Map({ gpsData }: MapProps) {
             <Marker
               key={`marker-${vehicleData.vehicle.imei}`}
               position={vehicleData.positions[vehicleData.positions.length - 1]}
-              icon={createCustomIcon(vehicleData.color)}
+              // icon={createCustomIcon(vehicleData.color)}
+              icon={snowplowIcon}
             >
               <Popup>
                 <div>

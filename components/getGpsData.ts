@@ -21,16 +21,22 @@ function getRandomColor() {
   return color;
 }
 
-export async function getGpsData(date: Date, timeRange: number, vehicles: Vehicle[]) {
+// export async function getGpsData(date: Date, timeRange: number, vehicles: Vehicle[]) {
+export async function getGpsData(start: string, end: string, vehicles: Vehicle[]) {
   // この関数は実際のアプリケーションでは、データベースやAPIからGPSデータを取得します
   // ここではダミーデータを返します
   // const res = await fetch(
   //   `https://qnhgfj7e92.execute-api.ap-northeast-1.amazonaws.com/dev/GetFromDynamoDB?start_time=${formattedStart}&end_time=${formattedEnd}`
   // );
 
-  const response = await client.queries.getGpsData({
-    baseDateTime: date.toISOString(),
-    timeRange: parseInt(timeRange.toString()),
+  // const response = await client.queries.getGpsData({
+  //   baseDateTime: date.toISOString(),
+  //   timeRange: parseInt(timeRange.toString()),
+  //   vehicleImeis: vehicles.map(vehicle => vehicle.imei),
+  // });
+  const response = await client.queries.getGpsDataWithTime({
+    startTime: start,
+    endTime: end,
     vehicleImeis: vehicles.map(vehicle => vehicle.imei),
   });
   let gpsData

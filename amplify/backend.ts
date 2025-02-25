@@ -4,6 +4,7 @@ import { data } from './data/resource';
 import { helloWorld } from './functions/hello-world/resource';
 import { insertTodo } from './functions/insertTodo/resource';
 import { getGpsData } from './functions/getGpsData/resource';
+import { getGpsDataWithTime } from './functions/getGpsDataWithTime/resource';
 import { Effect, Policy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Stack } from "aws-cdk-lib";
 
@@ -16,6 +17,7 @@ const backend = defineBackend({
   helloWorld,
   insertTodo,
   getGpsData, // getGpsDataを追加
+  getGpsDataWithTime, // getGpsDataWithTimeを追加
 });
 
 const authenticatedUserIamRole = backend.auth.resources.authenticatedUserIamRole;
@@ -68,3 +70,25 @@ const gpsDataPolicy = new Policy(
   }
 );
 backend.getGpsData.resources.lambda.role?.attachInlinePolicy(gpsDataPolicy);
+
+// getGpsDataWithTime用のポリシーを定義
+const getGpsDataWithTimePolicy = new Policy(
+  Stack.of(todoTable),
+  "getGpsDataWithTimePolicy",
+  {
+    statements: [
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          'dynamodb:Query',
+          'dynamodb:Scan',
+          'dynamodb:PutItem',
+          'dynamodb:DeleteItem',
+          'dynamodb:GetItem',
+        ],
+        resources: ["*"],
+      }),
+    ],
+  }
+);
+backend.getGpsDataWithTime.resources.lambda.role?.attachInlinePolicy(getGpsDataWithTimePolicy);
