@@ -40,6 +40,7 @@ export async function getGpsData(start: string, end: string, vehicles: Vehicle[]
     vehicleImeis: vehicles.map(vehicle => vehicle.imei),
   });
   let gpsData
+  console.log(response);
   if (response.data) {
     const parsedData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
     const gpsDataJson = JSON.parse(parsedData.body);
@@ -47,6 +48,7 @@ export async function getGpsData(start: string, end: string, vehicles: Vehicle[]
   } else {
     gpsData = [];
   }
+  console.log(gpsData);
 
   // データをIMEIごとにグループ化
   const imeiGroups: { [key: string]: GpsItem[] } = {};

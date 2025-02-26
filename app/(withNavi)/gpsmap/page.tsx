@@ -142,13 +142,16 @@ export default function GpsTrackingMap() {
       <VehicleSelect selectedVehicles={selectedVehicles} setSelectedVehicles={setSelectedVehicles} />
 
       <Button onClick={fetchData}>Fetch GPS Data</Button>
+      <div>
+        <Map gpsData={gpsData} />
+      </div>
 
-        <div>
-          <h2 className="text-xl font-semibold">Selected Parameters</h2>
+      <div>
+        <h2 className="text-xl font-semibold">Selected Parameters</h2>
         {fetchMode === "dateRange" ? (
           <>
             <p>Date: {date}</p>
-          <p>Time Range: {timeRange} hours</p>
+            <p>Time Range: {timeRange} hours</p>
           </>
         ) : (
           <>
@@ -157,10 +160,6 @@ export default function GpsTrackingMap() {
           </>
         )}
         <p>Selected Vehicles: {selectedVehicles.map((vehicle) => vehicle.name).join(", ")}</p>
-      </div>
-
-      <div>
-        <Map gpsData={gpsData} />
       </div>
 
       <div>
