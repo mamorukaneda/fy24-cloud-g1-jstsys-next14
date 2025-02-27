@@ -40,7 +40,7 @@ export async function getGpsData(start: string, end: string, vehicles: Vehicle[]
     vehicleImeis: vehicles.map(vehicle => vehicle.imei),
   });
   let gpsData
-  console.log(response);
+  console.log(start, end);
   if (response.data) {
     const parsedData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
     const gpsDataJson = JSON.parse(parsedData.body);

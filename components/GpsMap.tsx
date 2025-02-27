@@ -19,7 +19,7 @@ interface MapProps {
   gpsData: i_gpsData[]
 }
 export default function Map({ gpsData }: MapProps) {
-  const center: [number, number] = [36.2040,136.6283]
+  const center: [number, number] = [36.8952,136.8717]
 
   // // カスタムアイコンの作成
   // const createCustomIcon = (color: string) => {
@@ -43,7 +43,7 @@ export default function Map({ gpsData }: MapProps) {
   });
 
   return (
-    <MapContainer center={center} zoom={12} style={{ height: '600px', width: '100%' }}>
+    <MapContainer center={center} zoom={9} style={{ height: '700px', width: '100%' }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

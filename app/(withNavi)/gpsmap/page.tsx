@@ -32,13 +32,13 @@ export default function GpsTrackingMap() {
   const [fetchMode, setFetchMode] = useState<"dateRange" | "timestamps">("dateRange")
 
   // Date Range Mode states
-  const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"))
+  const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DDTHH:mm"))
   // const [date, setDate] = useState<string>(new Date("2024-12-03T00:00").toISOString().split('T')[0])
   const [timeRange, setTimeRange] = useState<string>("3")
 
   // Timestamp Mode states
-  const [startTimestamp, setStartTimestamp] = useState<string>(dayjs().subtract(3, "hour").format("YYYY-MM-DDTHH:mm"))
-  const [endTimestamp, setEndTimestamp] = useState<string>(dayjs().format("YYYY-MM-DDTHH:mm"))
+  const [startTimestamp, setStartTimestamp] = useState<string>(dayjs().format("YYYY-MM-DDTHH:mm"))
+  const [endTimestamp, setEndTimestamp] = useState<string>(dayjs().add(3, "hour").format("YYYY-MM-DDTHH:mm"))
 
   const [selectedVehicles, setSelectedVehicles] = useState<Vehicle[]>([])
   const [gpsData, setGpsData] = useState<gpsData[]>([])
@@ -47,13 +47,11 @@ export default function GpsTrackingMap() {
     let start: string, end: string
     if (fetchMode === "dateRange") {
       const baseDateTime = dayjs(date)
-      start = baseDateTime.subtract(Number(timeRange), "hour").format("YYYYMMDDHHmmss")
-      end = baseDateTime.format("YYYYMMDDHHmmss")
-      console.log(start, end)
+      start = baseDateTime.format("YYYYMMDDHHmmss")
+      end = baseDateTime.add(Number(timeRange), "hour").format("YYYYMMDDHHmmss")
     } else {
       start = dayjs(startTimestamp).format("YYYYMMDDHHmmss")
       end = dayjs(endTimestamp).format("YYYYMMDDHHmmss")
-      console.log(start, end)
     }
     const data = await getGpsData(start, end, selectedVehicles)
     setGpsData(data)
@@ -86,7 +84,7 @@ export default function GpsTrackingMap() {
             </label>
             <Input
               id="date"
-          type="date"
+          type="datetime-local"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           className="px-3 py-2 border rounded-md"
@@ -142,6 +140,11 @@ export default function GpsTrackingMap() {
       <VehicleSelect selectedVehicles={selectedVehicles} setSelectedVehicles={setSelectedVehicles} />
 
       <Button onClick={fetchData}>Fetch GPS Data</Button>
+      <div>
+        <br></br>
+        <br></br>
+        <br></br>
+      </div>
       <div>
         <Map gpsData={gpsData} />
       </div>
