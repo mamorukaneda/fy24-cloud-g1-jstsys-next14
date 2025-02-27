@@ -102,13 +102,13 @@ export default function VehicleManagement() {
 
         for (let i = 1; i < lines.length; i++) {
           // Skip header row
-          const [name, trader, imei] = lines[i].split(",")
-          if (name && trader && imei) {
+          const [imei, trader, name,] = lines[i].split(",")
+          if (imei && trader && name) {
             // Create each vehicle directly through the API instead of updating state
             await client.models.Vehicle.create({
-              name: name.trim(),
-              trader: trader.trim(),
-              imei: imei.trim(),
+              imei: imei.trim().replace(/"/g, ''),
+              trader: trader.trim().replace(/"/g, ''),
+              name: name.trim().replace(/"/g, ''),
             })
           }
         }
