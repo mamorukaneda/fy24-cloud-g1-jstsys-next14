@@ -18,6 +18,13 @@ import { traders } from './traders'
 
 const client = generateClient<Schema>();
 
+interface Vehicle {
+    id: string;
+    imei: string;
+    name: string;
+    trader: string;
+}
+
 export default function VehicleManagement() {
   const [vehicles, setVehicles] = useState<vehicleType[]>([])
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
@@ -102,12 +109,12 @@ export default function VehicleManagement() {
         const newVehicles: Vehicle[] = []
         
         for (let i = 1; i < lines.length; i++) {  // Skip header row
-          const [name, type, imei] = lines[i].split(',')
+          const [name, trader, imei] = lines[i].split(',')
           if (name && type && imei) {
             newVehicles.push({
               id: Date.now() + i,  // Unique ID
               name: name.trim(),
-              type: type.trim(),
+              trader: trader.trim(),
               imei: imei.trim()
             })
           }
