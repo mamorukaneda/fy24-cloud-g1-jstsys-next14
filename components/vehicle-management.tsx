@@ -18,13 +18,6 @@ import { traders } from './traders'
 
 const client = generateClient<Schema>();
 
-interface Vehicle {
-    id: number;
-    imei: string;
-    name: string;
-    trader: string;
-}
-
 export default function VehicleManagement() {
   const [vehicles, setVehicles] = useState<vehicleType[]>([])
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
@@ -103,27 +96,26 @@ export default function VehicleManagement() {
     const file = event.target.files?.[0]
     if (file) {
       const reader = new FileReader()
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const content = e.target?.result as string
-        const lines = content.split('\n')
-        const newVehicles: Vehicle[] = []
-        
-        for (let i = 1; i < lines.length; i++) {  // Skip header row
-          const [name, trader, imei] = lines[i].split(',')
+        const lines = content.split("\n")
+
+        for (let i = 1; i < lines.length; i++) {
+          // Skip header row
+          const [name, trader, imei] = lines[i].split(",")
           if (name && trader && imei) {
-            newVehicles.push({
-              id: Date.now() + i,  // Unique ID
+            // Create each vehicle directly through the API instead of updating state
+            await client.models.Vehicle.create({
               name: name.trim(),
               trader: trader.trim(),
-              imei: imei.trim()
+              imei: imei.trim(),
             })
           }
         }
 
-        setVehicles([...vehicles, ...newVehicles])
         toast({
           title: "CSVアップロード",
-          description: `${newVehicles.length}台の車両が正常にインポートされました。`,
+          description: `${lines.length - 1}台の車両が正常にインポートされました。`,
         })
       }
       reader.readAsText(file)
