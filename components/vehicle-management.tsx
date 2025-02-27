@@ -19,7 +19,7 @@ import { traders } from './traders'
 const client = generateClient<Schema>();
 
 interface Vehicle {
-    id: string;
+    id: number;
     imei: string;
     name: string;
     trader: string;
