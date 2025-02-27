@@ -110,7 +110,7 @@ export default function VehicleManagement() {
         
         for (let i = 1; i < lines.length; i++) {  // Skip header row
           const [name, trader, imei] = lines[i].split(',')
-          if (name && type && imei) {
+          if (name && trader && imei) {
             newVehicles.push({
               id: Date.now() + i,  // Unique ID
               name: name.trim(),
