@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { generateClient } from "aws-amplify/data"
@@ -50,19 +51,23 @@ export default function VehicleSelect({ selectedVehicles, setSelectedVehicles }:
   }
 
   return (
-    <div className="flex flex-col space-y-2">
-      <Label>Select Vehicles</Label>
-      {vehicles.map((vehicle) => (
-        <div key={vehicle.imei} className="flex items-center space-x-2">
-          <Checkbox
-            id={vehicle.imei}
-            checked={isVehicleSelected(vehicle)}
-            onCheckedChange={() => handleVehicleToggle(vehicle)}
-          />
-          <Label htmlFor={vehicle.imei}>{vehicle.name}</Label>
-        </div>
-      ))}
-    </div>
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="vehicles">
+        <AccordionTrigger>Select Vehicles</AccordionTrigger>
+        <AccordionContent>
+          {vehicles.map((vehicle) => (
+            <div key={vehicle.imei} className="flex items-center space-x-2">
+              <Checkbox
+                id={vehicle.imei}
+                checked={isVehicleSelected(vehicle)}
+                onCheckedChange={() => handleVehicleToggle(vehicle)}
+              />
+              <Label htmlFor={vehicle.imei}>{vehicle.name}</Label>
+            </div>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }
 
