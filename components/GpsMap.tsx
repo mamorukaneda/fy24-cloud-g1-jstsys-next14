@@ -38,8 +38,9 @@ export default function Map({ gpsData }: MapProps) {
   // };
   const snowplowIcon = new Icon({
     iconUrl: '/images/snowplow.png', // 画像のパスを修正
-    iconSize: [20, 20],
-    iconAnchor: [15, 15],
+    iconSize: [32, 37],
+    iconAnchor: [16, 16],
+    pupupAnchor: [0, -30]
   });
 
   return (
